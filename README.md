@@ -29,6 +29,6 @@ This project creates a workflow that:
 ## Docker Command Example
 
 ```bash
-docker run -it --rm --name my-running-script -v "$PWD":/usr/src/myapp -w /usr/src/myapp python:3 python your-daemon-or-script.py
+docker run -it --rm --name mypython-script python:3.12-alpine /bin/sh -c "wget -O /opt/pi_digit_calculator.py https://raw.githubusercontent.com/MariuszFerdyn/PythonScriptFromNetwokRunner/main/python/pi_digit_calculator.py && cd /opt && python pi_digit_calculator.py"
 ```
 
