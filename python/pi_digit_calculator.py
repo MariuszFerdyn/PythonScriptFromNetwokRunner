@@ -10,26 +10,13 @@ import platform
 import os
 import math
 import sys
-import subprocess
-
-# Function to install packages if they don't exist
-def install_package(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
-
-# Check and install required packages
-required_packages = ['psutil']
-for package in required_packages:
-    try:
-        __import__(package.replace('-', '.'))
-    except ImportError:
-        print(f"Installing {package}...")
-        install_package(package)
-
-# Now that we've ensured dependencies are installed, import them
-import psutil
 
 def get_system_info():
-    """Returns basic information about the system"""
+    """Returns basic information about the system without using psutil"""
+    # Get CPU count using os module instead of psutil
+    cpu_count = os.cpu_count() or "N/A"
+    
+    # We cannot get physical CPU count or memory info without psutil
     system_info = {
         "Platform": platform.system(),
         "Platform Release": platform.release(),
@@ -38,13 +25,12 @@ def get_system_info():
         "Processor": platform.processor(),
         "Hostname": platform.node(),
         "Python Version": platform.python_version(),
-        "CPU Count": psutil.cpu_count(logical=True),
-        "Physical CPU Count": psutil.cpu_count(logical=False),
-        "Memory (GB)": round(psutil.virtual_memory().total / (1024**3), 2)
+        "CPU Count": cpu_count,
+        "Physical CPU Count": "N/A (psutil not available)",
+        "Memory (GB)": "N/A (psutil not available)"
     }
     return system_info
 
-# Rest of your code remains the same
 def calculate_pi_nilakantha(max_iterations=None, max_runtime_seconds=None):
     """
     Calculate Pi using the Nilakantha series:
