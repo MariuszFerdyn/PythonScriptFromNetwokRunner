@@ -32,3 +32,13 @@ This project creates a workflow that:
 docker run -it --rm --name mypython-script python:3.12-alpine /bin/sh -c "wget -O /opt/pi_digit_calculator.py https://raw.githubusercontent.com/MariuszFerdyn/PythonScriptFromNetwokRunner/main/python/pi_digit_calculator.py && cd /opt && python pi_digit_calculator.py"
 ```
 
+---
+
+### Storing the Script in Azure Storage Account
+
+The script can be stored in an Azure Storage Account as a blob. To provide secure access, you can generate a Shared Access Signature (SAS) token with the following features:
+- **Read-Only Access**: Grant access with permissions limited to reading the blob.
+- **Time-Based Access**: Specify a time window during which the token is valid, ensuring temporary access.
+- **IP Address Restrictions**: Restrict access to specific IP addresses for added security.
+
+For more information on generating SAS tokens, refer to the [Azure Documentation on Shared Access Signatures](https://learn.microsoft.com/en-us/azure/storage/common/storage-sas-overview).
