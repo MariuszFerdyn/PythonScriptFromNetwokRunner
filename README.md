@@ -32,6 +32,29 @@ This project creates a workflow that:
 docker run -it --rm --name mypython-script python:3.12-alpine /bin/sh -c "wget -O /opt/pi_digit_calculator.py https://raw.githubusercontent.com/MariuszFerdyn/PythonScriptFromNetwokRunner/main/python/pi_digit_calculator.py && cd /opt && python pi_digit_calculator.py"
 ```
 
+## Azure Container App 
+
+```bash
+# Login to Azure
+az login 
+        
+# Set the subscription context
+az account set --subscription $subscriptionId
+        
+# Create a new resource group for the gallery if it doesn't exist
+az group create --name $ResourceGroup --location $location
+        
+# Prepare env
+az extension add --name containerapp --upgrade --allow-preview true
+az provider register --namespace Microsoft.App
+az provider register --namespace Microsoft.OperationalInsights
+
+# Create Container App Enviorment
+az containerapp env create --name $Enviorment --resource-group $ResourceGroup --location $location
+
+# Create a container app by explicitly passing in a Compose configuration file.
+az containerapp job create --name pi-calculator-job --resource-group $ResourceGroup --environment $Enviorment --trigger-type Manual --replica-timeout 1800 --replica-retry-limit 1 --replica-completion-count 1 --image python:3.12-alpine --command-line "/bin/sh -c 'wget -O /opt/pi_digit_calculator.py https://raw.githubusercontent.com/MariuszFerdyn/PythonScriptFromNetwokRunner/main/python/pi_digit_calculator.py && cd /opt && python pi_digit_calculator.py'" --cpu 0.5 --memory 1.0Gi
+```     
 ---
 
 ### Storing the Script in Azure Storage Account
