@@ -7,10 +7,26 @@ and runs for a specified amount of time (default: 3 minutes)
 import time
 import datetime
 import platform
-import psutil
 import os
 import math
 import sys
+import subprocess
+
+# Function to install packages if they don't exist
+def install_package(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# Check and install required packages
+required_packages = ['psutil']
+for package in required_packages:
+    try:
+        __import__(package.replace('-', '.'))
+    except ImportError:
+        print(f"Installing {package}...")
+        install_package(package)
+
+# Now that we've ensured dependencies are installed, import them
+import psutil
 
 def get_system_info():
     """Returns basic information about the system"""
@@ -28,6 +44,7 @@ def get_system_info():
     }
     return system_info
 
+# Rest of your code remains the same
 def calculate_pi_nilakantha(max_iterations=None, max_runtime_seconds=None):
     """
     Calculate Pi using the Nilakantha series:
